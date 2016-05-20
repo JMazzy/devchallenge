@@ -3,6 +3,9 @@ class SessionsController < ApplicationController
   skip_before_action :require_login
 
   def new
+    if signed_in_user?
+      redirect_to maps_path
+    end
   end
 
 
