@@ -33,6 +33,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
+  def signed_in_user?
+    !!@current_user
+  end
+  helper_method :signed_in_user?
+
   # make sure a user is signed in
   def require_login
     unless signed_in_user?
