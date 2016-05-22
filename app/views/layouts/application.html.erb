@@ -15,7 +15,7 @@
       <%= render partial: "shared/navbar" %>
     </header>
 
-    <main class="container">
+    <main class="container-fluid">
       <% flash.each do |key, message| %>
         <div class="alert alert-<%= key %>">
           <%= message %>
