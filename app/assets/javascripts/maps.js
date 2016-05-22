@@ -12,4 +12,6 @@ $( document ).ready( function() {
       url: "http://tmservices1.esri.com/arcgis/rest/services/LiveFeeds/MODIS_Thermal/MapServer/0"
     }).addTo(map);
   });
+
+
 });

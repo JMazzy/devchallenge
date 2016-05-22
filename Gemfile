@@ -11,6 +11,7 @@ gem 'jbuilder', '2.4.1'
 gem 'bcrypt', '3.1.11'
 gem 'figaro'
 gem 'leaflet-rails'
+gem 'activerecord-postgis-adapter'
 
 group :development, :test do
   gem 'pry-byebug'
