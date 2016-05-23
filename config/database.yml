@@ -1,13 +1,13 @@
 # Local Database
-default: &default
-  adapter: postgis
-
-# Remote Database
 # default: &default
 #   adapter: postgis
-#   username: <%= ENV['rds_username'] %>
-#   password: <%= ENV['rds_password'] %>
-#   host: <%= ENV['rds_host'] %>
+
+# Remote Database
+default: &default
+  adapter: postgis
+  username: <%= ENV['rds_username'] %>
+  password: <%= ENV['rds_password'] %>
+  host: <%= ENV['rds_host'] %>
 
 development:
   <<: *default

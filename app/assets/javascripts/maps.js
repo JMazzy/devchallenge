@@ -33,9 +33,19 @@ var MapModule = (function() {
       url: "http://tmservices1.esri.com/arcgis/rest/services/LiveFeeds/MODIS_Thermal/MapServer/0"
     })
 
+    var feature_server_incidents = "http://services1.arcgis.com/CHRAD8xHGZXuIQsJ/arcgis/rest/services/dev_challenge_ia/FeatureServer/0";
+
     var incidents = L.esri.featureLayer({
-      url: "http://services1.arcgis.com/CHRAD8xHGZXuIQsJ/arcgis/rest/services/dev_challenge_ia/FeatureServer/0"
+      url: feature_server_incidents,
     })
+
+    // $.getJSON("http://localhost:3000/incidents", function(data) {
+    //   for ( var i = 0; i < data.length; i++ ) {
+    //     var lat = data[i].lat;
+    //     var lng = data[i].lon;
+    //     var marker = L.marker([lat, lng]).addTo(map);
+    //   }
+    // });
 
     hotspots.addTo(map);
     incidents.addTo(map);
@@ -67,7 +77,7 @@ var MapModule = (function() {
   var _clickListener = function() {
     map.on("click", function(e) {
       if (addIncident) {
-        console.log(e.latlng);
+        _createIncident(e.latlng.lat, e.latlng.lng);
         addIncident = false;
       }
     });
@@ -77,11 +87,22 @@ var MapModule = (function() {
     });
   };
 
+  var _createIncident = function(lat, lng) {
+    $("#lat-field").val(lat);
+    $("#lon-field").val(lng);
+
+    var incidents = overlays.incidents
+    incidents.addFeature()
+    L.marker([lat, lng]).addTo(map);
+  };
+
   return {
     init: init,
   };
 })();
 
 $( document ).ready( function() {
-  MapModule.init();
+  if ( $("#mapid").length > 0 ) {
+    MapModule.init();
+  }
 });

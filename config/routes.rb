@@ -9,4 +9,6 @@ Rails.application.routes.draw do
 
   resources :maps, only: [:index]
 
+  resources :incidents, only: [:index, :create, :update, :destroy]
+
 end

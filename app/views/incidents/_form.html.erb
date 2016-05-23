@@ -1,0 +1,31 @@
+<%= form_for @incident do |f| %>
+  <div class="form-group">
+    <%= f.label "Latitude" %>
+    <%= f.text_field :lat, id: "lat-field", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Longitude" %>
+    <%= f.text_field :lon, id: "lon-field", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Name" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Acres" %>
+    <%= f.text_field :acres, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Notes" %>
+    <%= f.text_area :notes, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+      <%= f.submit "Submit", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
