@@ -15,16 +15,17 @@ ActiveRecord::Schema.define(version: 20160520181340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "incidents", force: :cascade do |t|
-    t.string   "shape",      null: false
-    t.float    "lat"
-    t.float    "lon"
-    t.string   "name",       null: false
-    t.float    "acres"
-    t.text     "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.geography "shape",      limit: {:srid=>4326, :type=>"point", :geographic=>true}, null: false
+    t.float     "lat"
+    t.float     "lon"
+    t.string    "name",                                                                null: false
+    t.float     "acres"
+    t.text      "notes"
+    t.datetime  "created_at",                                                          null: false
+    t.datetime  "updated_at",                                                          null: false
   end
 
   create_table "users", force: :cascade do |t|

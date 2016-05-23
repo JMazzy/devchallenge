@@ -12,6 +12,7 @@ gem 'bcrypt', '3.1.11'
 gem 'figaro'
 gem 'leaflet-rails'
 gem 'activerecord-postgis-adapter'
+gem 'httparty'
 
 group :development, :test do
   gem 'pry-byebug'

@@ -1,7 +1,7 @@
 class CreateIncidents < ActiveRecord::Migration
   def change
     create_table :incidents do |t|
-      t.string :shape, null: false
+      t.st_point :shape, geographic: true, srid: 4326, null: false
       t.float :lat
       t.float :lon
       t.string :name, null: false
