@@ -23,12 +23,28 @@ APP.Incidents = (function(){
     );
   };
 
-  var updateIncident = function() {
+  var updateIncident = function(marker, data) {
 
+    _changeOnFeatureLayer(marker, data.incident);
+
+    $.ajax({
+      url: "http://localhost:3000/incidents/" + data.incident.id,
+      method: "PATCH",
+      data: data,
+      success: function( response ) {
+        console.log(response);
+      },
+    });
   };
 
-  var destroyIncident = function() {
-
+  var destroyIncident = function(fid, id) {
+    _removeFromFeatureLayer(fid);
+    $.ajax({
+      url: "http://localhost:3000/incidents/" + id,
+      method: "DELETE",
+      success: function( response ) {
+      },
+    });
   };
 
   var _addToFeatureLayer = function(marker, properties) {
@@ -37,16 +53,21 @@ APP.Incidents = (function(){
     geo_json_marker.properties = properties;
 
     // Add to feature layer
-    var incidents = overlays.incidents;
-    incidents.addFeature(geo_json_marker);
+    incidentLayer.addFeature(geo_json_marker);
   };
 
-  var _changeOnFeatureLayer = function() {
-
+  var _changeOnFeatureLayer = function(marker, properties) {
+    incidentLayer.updateFeature({
+      type: 'Feature',
+      geometry: marker.toGeoJSON().geometry,
+      properties: {FID: properties.fid, Id: properties.id, Name: properties.name, Lat: properties.lat, Lng: properties.lon, Notes: properties.notes, Acres: properties.acres},
+    }, function(error, response) {
+      console.log(error, response);
+    });
   };
 
-  var _removeFromFeatureLayer = function() {
-
+  var _removeFromFeatureLayer = function(fid) {
+    incidentLayer.deleteFeature(fid);
   };
 
   return {

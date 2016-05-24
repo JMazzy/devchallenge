@@ -4,7 +4,7 @@ APP.MapModule = (function() {
 
   var map, baseLayers, overlays, isDrawable, incidents, hotspots;
 
-  var popupTemplate = "<h3>{name}</h3><p>Lat: {lat}, Lng: {lng}</p><p>Size: {acres} acres</p><p>{notes}</p>";
+  var popupTemplate = "<h3>{name}</h3><p>Lat: {lat}, Lng: {lon}</p><p>Size: {acres} acres</p><p>{notes}</p><button id='edit-incident-button' class='btn btn-default btn-xs'>Edit</button><button id='delete-incident-button' class='btn btn-danger btn-xs pull-right'>Delete</button>";
 
   var init = function(incidentsModule, hotspotsModule) {
     isDrawable = false;
@@ -58,14 +58,38 @@ APP.MapModule = (function() {
     layer.bindPopup(function(e){
       var props = e.feature.properties;
       var data = {
+        fid: props.FID,
+        id: props.Id,
         name: props.Name,
         acres: props.Acres,
         notes: props.Notes,
         lat: e.getLatLng().lat,
-        lng: e.getLatLng().lng,
+        lon: e.getLatLng().lng,
       };
+      _popupListeners(e);
       return L.Util.template(popupTemplate, data)
     });
+  };
+
+  var _popupListeners = function(popup) {
+    popup.on("popupopen", function() {
+      $("#edit-incident-button").on("click", function(){
+        $('#create-incident-button').hide();
+        $('#update-incident-button').show();
+        $('#incident-modal').modal()
+
+        var props = popup.feature.properties;
+
+        _populateAll(props.FID, props.Id, popup.getLatLng().lat, popup.getLatLng().lng, props.Name, props.Acres, props.Notes);
+      });
+
+      $("#delete-incident-button").on("click", function(e) {
+        e.preventDefault();
+        var id = popup.feature.properties.Id;
+        var fid = popup.feature.properties.FID;
+        incidents.destroyIncident(fid, id);
+      });
+    })
   };
 
   var _initControl = function() {
@@ -75,9 +99,11 @@ APP.MapModule = (function() {
   var _clickListener = function() {
     map.on("click", function(e) {
       if (isDrawable) {
-        console.log(e)
-        _populateLatLng(e.latlng.lat, e.latlng.lng);
+        _populateLatLon(e.latlng.lat, e.latlng.lng);
         isDrawable = false;
+        $('#create-incident-button').show();
+        $('#update-incident-button').hide();
+        $('#incident-modal').modal()
       }
     });
 
@@ -85,26 +111,51 @@ APP.MapModule = (function() {
       isDrawable = true;
     });
 
-    $("#submit-incident-button").on("click", function(e) {
+    $("#create-incident-button").on("click", function(e) {
       e.preventDefault();
-      var data = {  incident:  {
-                        name: $("#name").val(),
-                        acres: $("#acres").val(),
-                        notes: $("#notes").val(),
-                        lat: $("#lat").val(),
-                        lon: $("#lon").val(), } };
+      var data = _buildRequestData();
       var marker = _buildMarker( data.incident );
       incidents.createIncident(marker, data);
     });
+
+    $("#update-incident-button").on("click", function(e) {
+      e.preventDefault();
+      var data = _buildRequestData();
+      var marker = _buildMarker( data.incident );
+      incidents.updateIncident(marker, data);
+    });
   };
 
-  var _populateLatLng = function(lat, lng) {
+  var _buildRequestData = function() {
+    return {
+      incident:  {
+        fid: $("#fid").val(),
+        id: $("#incident-id").val(),
+        name: $("#name").val(),
+        acres: $("#acres").val(),
+        notes: $("#notes").val(),
+        lat: $("#lat").val(),
+        lon: $("#lon").val(),
+      }
+    };
+  }
+
+  var _populateLatLon = function(lat, lon) {
     $("#lat").val(lat);
-    $("#lon").val(lng);
+    $("#lon").val(lon);
+  }
+
+  var _populateAll = function(fid, id, lat, lon, name, acres, notes) {
+    _populateLatLon(lat, lon);
+    $("#fid").val(fid);
+    $("#incident-id").val(id);
+    $("#name").val(name);
+    $("#acres").val(acres);
+    $("#notes").val(notes);
   }
 
   var _buildMarker = function(properties) {
-    var marker = L.marker([properties.lat, properties.lng]);
+    var marker = L.marker([properties.lat, properties.lon]);
     marker.addTo(map);
 
     // Bind the popup to the marker

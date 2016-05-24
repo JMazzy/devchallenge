@@ -31,16 +31,15 @@ class IncidentsController < ApplicationController
 
   def update
     @incident = Incident.find(params[:id])
-    if @incident.update( incident_params )
-      flash[:success] = "Incident updated."
-      format.json { render json: @incident.to_json }
-    else
-      flash[:error] = "Incident could not be updated."
-      format.json {render json: @incident.errors, status: :unprocessable_entity}
-    end
 
     respond_to do |format|
-
+      if @incident.update( incident_params )
+        flash[:success] = "Incident updated."
+        format.json { render json: @incident.to_json }
+      else
+        flash[:error] = "Incident could not be updated."
+        format.json {render json: @incident.errors, status: :unprocessable_entity}
+      end
     end
   end
 
@@ -62,11 +61,13 @@ class IncidentsController < ApplicationController
   private
 
   def incident_params
-    params.require(:incident).permit( :geography,
-                                      :lat,
-                                      :lon,
-                                      :name,
-                                      :acres,
-                                      :notes )
+    params.require(:incident).permit(
+      :id,
+      :geography,
+      :lat,
+      :lon,
+      :name,
+      :acres,
+      :notes )
   end
 end

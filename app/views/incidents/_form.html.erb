@@ -1,32 +1,49 @@
-<form>
-  <div class="form-group">
-    <label>Latitude</label>
-    <input id="lat" class="form-control" type="text" name="incident[lat]">
-  </div>
+<!-- Modal -->
+<div class="modal fade" id="incident-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Incident Form</h4>
+        </div>
+        <div class="modal-body">
+          <input id="fid" type="hidden" value="">
+          <input id="incident-id" type="hidden" value="">
 
-  <div class="form-group">
-    <label>Longitude</label>
-    <input id="lon" class="form-control" type="text">
-  </div>
+          <div class="form-group">
+            <label>Latitude</label>
+            <input id="lat" class="form-control" type="text" name="incident[lat]">
+          </div>
 
-  <div class="form-group">
-    <label>Name</label>
-    <input class="form-control" type="text" id="name">
-  </div>
+          <div class="form-group">
+            <label>Longitude</label>
+            <input id="lon" class="form-control" type="text">
+          </div>
 
-  <div class="form-group">
-    <label>Acres</label>
-    <input class="form-control" type="text" id="acres">
-  </div>
+          <div class="form-group">
+            <label>Name</label>
+            <input class="form-control" type="text" id="name">
+          </div>
 
-  <div class="form-group">
-    <label>Notes</label>
-    <textarea class="form-control" id="notes">
-    </textarea>
-  </div>
+          <div class="form-group">
+            <label>Acres</label>
+            <input class="form-control" type="text" id="acres">
+          </div>
 
-  <div class="form-group">
-    <input type="submit" class="btn btn-primary" id="submit-incident-button">
+          <div class="form-group">
+            <label>Notes</label>
+            <textarea class="form-control" id="notes">
+            </textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="create-incident-button">Create</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-incident-button">Update</button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
-
-</form>
+</div>
