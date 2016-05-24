@@ -16,14 +16,15 @@ class IncidentsController < ApplicationController
   def create
     @incident = Incident.new( incident_params )
     @incident.shape = "POINT(#{@incident.lat} #{@incident.lon})"
-    if @incident.save
-      flash[:success] = "Incident created."
-    else
-      flash[:error] = "Incident could not be created."
-    end
 
     respond_to do |format|
-      format.json { render json: @incident.to_json }
+      if @incident.save
+        flash[:success] = "Incident created."
+        format.json { render json: @incident.to_json }
+      else
+        flash[:error] = "Incident could not be created."
+        format.json {render json: @incident.errors, status: :unprocessable_entity}
+      end
     end
   end
 
@@ -32,28 +33,29 @@ class IncidentsController < ApplicationController
     @incident = Incident.find(params[:id])
     if @incident.update( incident_params )
       flash[:success] = "Incident updated."
+      format.json { render json: @incident.to_json }
     else
       flash[:error] = "Incident could not be updated."
+      format.json {render json: @incident.errors, status: :unprocessable_entity}
     end
 
     respond_to do |format|
-      format.html { redirect_to :back }
-      format.json { render json: @incident.to_json }
+
     end
   end
 
 
   def destroy
     @incident = Incident.find(params[:id])
-    if @incident.destroy
-      flash[:success] = "Incident deleted."
-    else
-      flash[:error] = "Incident could not be deleted."
-    end
 
     respond_to do |format|
-      format.html { redirect_to :back }
-      format.json { render json: @incident.to_json }
+      if @incident.destroy
+        flash[:success] = "Incident deleted."
+        format.json { render json: @incident.to_json }
+      else
+        flash[:error] = "Incident could not be deleted."
+        format.json {render json: @incident.errors, status: :unprocessable_entity}
+      end
     end
   end
 

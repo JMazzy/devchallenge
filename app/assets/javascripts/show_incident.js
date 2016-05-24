@@ -1,4 +1,6 @@
-var IncidentModule = (function() {
+var APP = APP || {};
+
+APP.ShowIncidentModule = (function() {
   var map;
 
   var init = function() {
@@ -29,6 +31,6 @@ var IncidentModule = (function() {
 
 $( document ).ready( function() {
   if ( $("#incident").length > 0 ) {
-    IncidentModule.init();
+    APP.IncidentModule.init();
   }
 });
