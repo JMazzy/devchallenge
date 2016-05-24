@@ -9,6 +9,6 @@ Rails.application.routes.draw do
 
   resources :maps, only: [:index]
 
-  resources :incidents, only: [:index, :create, :update, :destroy]
+  resources :incidents, only: [:index, :show, :create, :update, :destroy]
 
 end

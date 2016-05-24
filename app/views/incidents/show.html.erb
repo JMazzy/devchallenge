@@ -1,0 +1,21 @@
+<div id="incident"></div>
+
+<div class="incident-data">
+  <h3>Incident Data</h3>
+
+  <div class="name">
+    <%= @incident.name %>
+  </div>
+
+  <div class="coordinates">
+    <span class="lat"><%= @incident.lat %></span>, <span class="lon"><%= @incident.lon %></span>
+  </div>
+
+  <div class="acres">
+    <%= @incident.acres %>
+  </div>
+
+  <div class="notes">
+    <%= @incident.notes %>
+  </div>
+</div>

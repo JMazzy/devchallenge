@@ -7,6 +7,12 @@ class IncidentsController < ApplicationController
     end
   end
 
+
+  def show
+    @incident = Incident.find( params[:id] )
+  end
+
+
   def create
     @incident = Incident.new( incident_params )
     @incident.shape = "POINT(#{@incident.lat} #{@incident.lon})"
@@ -15,7 +21,10 @@ class IncidentsController < ApplicationController
     else
       flash[:error] = "Incident could not be created."
     end
-    redirect_to :back
+
+    respond_to do |format|
+      format.json { render json: @incident.to_json }
+    end
   end
 
 
@@ -26,7 +35,11 @@ class IncidentsController < ApplicationController
     else
       flash[:error] = "Incident could not be updated."
     end
-    redirect_to :back
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { render json: @incident.to_json }
+    end
   end
 
 
@@ -37,7 +50,11 @@ class IncidentsController < ApplicationController
     else
       flash[:error] = "Incident could not be deleted."
     end
-    redirect_to :back
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { render json: @incident.to_json }
+    end
   end
 
   private
