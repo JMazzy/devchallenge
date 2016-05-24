@@ -4,7 +4,7 @@ APP.MapModule = (function() {
 
   var map, baseLayers, overlays, isDrawable, incidents, hotspots;
 
-  var popupTemplate = "<h3>{name}</h3><p>Lat: {lat}, Lng: {lon}</p><p>Size: {acres} acres</p><p>{notes}</p><button id='edit-incident-button' class='btn btn-default btn-xs'>Edit</button><button id='delete-incident-button' class='btn btn-danger btn-xs pull-right'>Delete</button>";
+  var popupTemplate = "<a href='/incidents/{id}'><h3>{name}</h3></a><p>Lat: {lat}, Lng: {lon}</p><p>Size: {acres} acres</p><p>{notes}</p><button id='edit-incident-button' class='btn btn-default btn-xs'>Edit</button><button id='delete-incident-button' class='btn btn-danger btn-xs pull-right'>Delete</button>";
 
   var init = function(incidentsModule, hotspotsModule) {
     isDrawable = false;
@@ -123,6 +123,7 @@ APP.MapModule = (function() {
       var data = _buildRequestData();
       var marker = _buildMarker( data.incident );
       incidents.updateIncident(marker, data);
+      marker.closePopup();
     });
   };
 

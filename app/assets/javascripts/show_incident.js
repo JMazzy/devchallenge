@@ -31,6 +31,6 @@ APP.ShowIncidentModule = (function() {
 
 $( document ).ready( function() {
   if ( $("#incident").length > 0 ) {
-    APP.IncidentModule.init();
+    APP.ShowIncidentModule.init();
   }
 });

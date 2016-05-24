@@ -13,6 +13,7 @@ gem 'figaro'
 gem 'leaflet-rails'
 gem 'activerecord-postgis-adapter'
 gem 'httparty'
+gem 'mailgun-rails'
 
 group :development, :test do
   gem 'pry-byebug'
