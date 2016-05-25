@@ -21,6 +21,7 @@ class IncidentsController < ApplicationController
       if @incident.save
         flash[:success] = "Incident created."
         format.json { render json: @incident.to_json }
+        Notification.notif_email(@incident).deliver_later
       else
         flash[:error] = "Incident could not be created."
         format.json {render json: @incident.errors, status: :unprocessable_entity}
