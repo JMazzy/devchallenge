@@ -14,6 +14,7 @@ gem 'leaflet-rails'
 gem 'activerecord-postgis-adapter'
 gem 'httparty'
 gem 'mailgun-rails'
+gem 'delayed_job_active_record'
 
 group :development, :test do
   gem 'pry-byebug'
