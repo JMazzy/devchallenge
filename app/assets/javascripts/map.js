@@ -2,7 +2,7 @@ var APP = APP || {};
 
 APP.MapModule = (function() {
 
-  var map, baseLayers, overlays, isDrawable, incidents, hotspots;
+  var map, baseLayers, overlays, isDrawable, incidents, hotspots, hotspotLayer, incidentLayer;
 
   var popupTemplate = "<a href='/incidents/{id}'><h3>{name}</h3></a><p>Lat: {lat}, Lng: {lon}</p><p>Size: {acres} acres</p><p>{notes}</p><button id='edit-incident-button' class='btn btn-default btn-xs'>Edit</button><button id='delete-incident-button' class='btn btn-danger btn-xs pull-right'>Delete</button>";
 
@@ -41,16 +41,13 @@ APP.MapModule = (function() {
   var _initOverlay = function() {
     overlays = {};
 
-    var hotspotLayer = hotspots.getHotspotLayer();
-
-    var incidentLayer = incidents.getIncidentLayer();
-
+    hotspotLayer = hotspots.getHotspotLayer();
     hotspotLayer.addTo(map);
-    incidentLayer.addTo(map);
-
-    _bindPopupToLayer(incidentLayer);
-
     overlays.hotspotLayer = hotspotLayer;
+
+    incidentLayer = incidents.getIncidentLayer();
+    incidentLayer.addTo(map);
+    _bindPopupToLayer(incidentLayer);
     overlays.incidentLayer = incidentLayer;
   }
 
@@ -124,6 +121,17 @@ APP.MapModule = (function() {
       var marker = _buildMarker( data.incident );
       incidents.updateIncident(marker, data);
       marker.closePopup();
+    });
+
+    $(".leaflet-control-layers-selector").change(function(e) {
+      var clicked = $(e.target);
+      var checked = clicked.is(":checked");
+      var text = clicked.next().text();
+      if (text === " incidentLayer") {
+        checked ? map.addLayer(incidentLayer) : map.removeLayer(incidentLayer);
+      } else if ( text == " hotspotLayer") {
+        checked ? map.addLayer(hotspotLayer) : map.removeLayer(hotspotLayer);
+      }
     });
   };
 
